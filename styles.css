@@ -88,3 +88,31 @@ cursor: pointer;
 width: 90px;
 text-align: center;
 }
+
+#editTodo{
+    background-color: #d2d271;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 70px;
+    text-align: center;
+    }
+
+    #editTodo:hover {
+    background-color: #c9c92f;
+    }
+
+#saveEdit{
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 70px;
+    text-align: center;
+    }
+
+    #saveEdit:hover {
+    background-color: #4cae4c;
+    }
