@@ -9,13 +9,16 @@
 <body>
     <div class="container">
         <h1>Task List</h1>
+        
         <div class="input-container">
             <input type="text" id="todoName" placeholder="Enter task">
             <input type="text" id="todoCategory" placeholder="Enter category">
-            <input type="date" id="todoDueDate">
+            <input type="date" id="todoDueDate" placeholder="Due Date">
             <button id="addTodo" onclick="addTodo()">Add Todo</button>
         </div>
         <ul id="todoList"></ul>
+        <div><button onclick="deleteCompleted()">Delete Completed Tasks</button></div>
+
     </div>
     <script src="script.js"></script>
 </body>
