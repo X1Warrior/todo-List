@@ -44,7 +44,14 @@
             <span id="inProgressCount" style="margin-left: 20px;">In Progress: 0</span>
         </div>
         <div><button onclick="deleteCompleted()">Delete Completed Tasks</button></div>
-        
+        <h2>Category Actions</h2>
+<div id="categoryActions">
+    <button onclick="deleteTodosByCategory('1')">Delete All Personal Todos</button>
+    <button onclick="deleteTodosByCategory('2')">Delete All Work Todos</button>
+    <button onclick="deleteTodosByCategory('3')">Delete All School Todos</button>
+    <button onclick="deleteTodosByCategory('4')">Delete All Other Todos</button>
+    <!-- Add dynamically created category buttons here if needed -->
+</div>
     </div>
     <script src="script.js"></script>
 </body>

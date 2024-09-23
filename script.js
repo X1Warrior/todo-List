@@ -124,6 +124,7 @@ function loadTodos() {
         todos = JSON.parse(storedTodos);
         renderTodos();
     }
+    renderCategoryActions();
 }
 
 function clearInputs() {
@@ -233,19 +234,35 @@ function renderCategories() {
 }
 
 function addNewCategory() {
-    const newCategoryName = document.getElementById('newCategory').value.trim();
-    const newCategoryId = (categories.length + 1).toString();
+    const newCategory = document.getElementById('newCategory').value;
+    const categorySelect = document.getElementById('todoCategory');
 
-    if (newCategoryName === '') {
+    if (newCategory.trim() === '') {
         alert('Please enter a category name');
         return;
     }
 
-    categories.push({ id: newCategoryId, name: newCategoryName });
-    renderCategories();
-    renderFilterButtons();
+    // Create a new option element
+    const option = document.createElement('option');
+    option.value = newCategory; // You might want to set a unique id instead of the name
+    option.textContent = newCategory;
+
+    // Append the new option to the select element
+    categorySelect.appendChild(option);
+
+    // Create a new delete button for the new category
+    const button = document.createElement('button');
+    button.textContent = `Delete All ${newCategory} Todos`;
+    button.onclick = () => deleteTodosByCategory(newCategory); // Ensure this matches the category logic
+
+    // Append the button to the category actions section
+    document.getElementById('categoryActions').appendChild(button);
+
+    // Close modal after adding the new category
     closeModal();
-    document.getElementById('newCategory').value = '';
+
+    // Clear input field
+    document.getElementById('newCategory').textContent = '';
 }
 
 function deleteCategory(categoryId) {
@@ -261,6 +278,39 @@ function deleteCategory(categoryId) {
 
     // Re-render filter buttons to reflect the changes
     renderFilterButtons();
+}
+
+function deleteTodosByCategory(categoryId) {
+    todos = todos.filter(todo => todo.category !== categoryId);
+    localStorage.setItem('todos', JSON.stringify(todos));
+    renderTodos();
+    alert(`All todos in category ${categoryId} have been deleted.`);
+}
+
+function renderCategoryActions() {
+    const categoryActions = document.getElementById('categoryActions');
+    categoryActions.innerHTML = ''; // Clear existing buttons
+
+    const categories = ["1: Personal", "2: Work", "3: School", "4: Other"];
+    categories.forEach(cat => {
+        const [value, text] = cat.split(": ");
+        const button = document.createElement('button');
+        button.textContent = `Delete All ${text} Todos`;
+        button.onclick = () => deleteTodosByCategory(value);
+        categoryActions.appendChild(button);
+    });
+
+    // Add dynamically created category buttons based on localStorage or other sources
+    const storedTodos = JSON.parse(localStorage.getItem('todos'));
+    const addedCategories = new Set(storedTodos.map(todo => todo.category));
+    addedCategories.forEach(category => {
+        if (!categories.some(cat => cat.startsWith(category))) {
+            const button = document.createElement('button');
+            button.textContent = `Delete All ${category} Todos`;
+            button.onclick = () => deleteTodosByCategory(category);
+            categoryActions.appendChild(button);
+        }
+    });
 }
 
 // Render categories initially
