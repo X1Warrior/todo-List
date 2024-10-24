@@ -234,26 +234,32 @@ function renderCategories() {
 }
 
 function addNewCategory() {
-    const newCategory = document.getElementById('newCategory').value;
+    const newCategoryName = document.getElementById('newCategory').value;
     const categorySelect = document.getElementById('todoCategory');
 
-    if (newCategory.trim() === '') {
+    if (newCategoryName.trim() === '') {
         alert('Please enter a category name');
         return;
     }
 
-    // Create a new option element
-    const option = document.createElement('option');
-    option.value = newCategory; // You might want to set a unique id instead of the name
-    option.textContent = newCategory;
+    const newCategoryId = Date.now().toString(); // Generate unique ID based on timestamp
 
-    // Append the new option to the select element
+    // Add the new category to the categories array
+    categories.push({ id: newCategoryId, name: newCategoryName });
+
+    // Add the new category to the select dropdown
+    const option = document.createElement('option');
+    option.value = newCategoryId;
+    option.textContent = newCategoryName;
     categorySelect.appendChild(option);
 
-    // Create a new delete button for the new category
+    // Create a new button to delete all todos in this category
     const button = document.createElement('button');
-    button.textContent = `Delete All ${newCategory} Todos`;
-    button.onclick = () => deleteTodosByCategory(newCategory); // Ensure this matches the category logic
+    button.textContent = `Delete All ${newCategoryName} Todos`;
+    button.onclick = () => {
+        deleteTodosByCategory(newCategoryId);
+        button.remove(); // Remove the button itself when clicked
+    };
 
     // Append the button to the category actions section
     document.getElementById('categoryActions').appendChild(button);
@@ -262,7 +268,10 @@ function addNewCategory() {
     closeModal();
 
     // Clear input field
-    document.getElementById('newCategory').textContent = '';
+    document.getElementById('newCategory').value = '';
+
+    // Re-render filter buttons to include the new category
+    renderFilterButtons();
 }
 
 function deleteCategory(categoryId) {
